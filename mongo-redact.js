@@ -8,11 +8,12 @@
 
 // Note:
 // - ints and floats are replaced with 999
-// - longs are replaced with 999999
-// - strings are replaced with "XXXXXXXX"
+// - longs are replaced with the original value times a random value
+// - strings are replaced with a random string of the same length
 
 
 function redactValue(val) {
+    var randomVal = Math.random();
     if (typeof val == "number") {
         if (val === (val|0)) {
             return 999;
@@ -20,12 +21,10 @@ function redactValue(val) {
             return 999.123;
         }
     } else if (val instanceof NumberLong) {
-        return new NumberLong(999999);
+        return new NumberLong(val * randomVal);
     } else if (typeof val == "string") {
         var s = "";
-        for (var i = 0; i < val.length; i++) {
-            s += "X";
-        }
+        s = randomVal.toString(36).substr(2, val.length);
         return s;
     } else if (val instanceof Date) {
         // return the same date
